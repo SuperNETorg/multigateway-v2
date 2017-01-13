@@ -63,6 +63,7 @@
 #define INFX_COINID 46
 #define DASH_COINID 47
 #define SYS_COINID 48
+#define SHARK_COINID 49
 
 #define BTC_MARKER "17outUgtsnLkguDuXm14tcQ7dMbdD8KZGK"
 #define LTC_MARKER "Le9hFCEGKDKp7qYpzfWyEFAq58kSQsjAqX"
@@ -112,6 +113,7 @@
 #define INFX_MARKER "CJq3QURp4erq1GDEsfAtLGGRVU37wgPuYv"
 #define DASH_MARKER "XiiSWYGYozVKg3jyDLfJSF2xbieX15bNU8"
 #define SYS_MARKER "1Kj6HAiMHXcYkFHy5k6BxqX9zNnLmMYyEs"
+#define SHARK_MARKER "RN6tbVZUkSkY4bAcAGhPv1f7QxmSsRgtUy"
 
 int32_t Numcoins;
 struct coin_info **Coin_daemons;

@@ -1,6 +1,6 @@
 make clean
 pkill -15 SuperNET
-git pull
+#git pull
 sleep 4
 ps aux | grep SuperNET
 ps aux | grep BitcoinDarkd
