@@ -129,7 +129,7 @@ char *default_coindir(char *confname,char *coinstr)
 #ifdef __APPLE__
     char *coindirs[][3] = { {"BTC","Bitcoin","bitcoin"}, {"BTCD","BitcoinDark"}, {"LTC","Litecoin","litecoin"}, {"VRC","Vericoin","vericoin"}, {"OPAL","OpalCoin","opalcoin"}, {"BITS","Bitstar","bitstar"}, {"DOGE","Dogecoin","dogecoin"}, {"DASH","Dash","dash"}, {"BC","Blackcoin","blackcoin"}, {"FIBRE","Fibre","fibre"}, {"VPN","Vpncoin","vpncoin"}, {"SYS","Syscoin","syscoin"}, {"INFX","Influx","influx"}, {"SHARK","SHARK","shark"} };
 #else
-    char *coindirs[][3] = { {"BTC",".bitcoin"}, {"BTCD",".BitcoinDark"}, {"LTC",".litecoin"}, {"VRC",".vericoin"}, {"OPAL",".opalcoin"}, {"BITS",".Bitstar"}, {"DOGE",".dogecoin"}, {"DASH",".dash"}, {"BC",".blackcoin"}, {"FIBRE",".Fibre"}, {"VPN",".vpncoin"}, {"SYS",".syscoin"}, {"INFX",".Influx"}, {"SHARK",".komodo/SHARK"} };
+    char *coindirs[][3] = { {"BTC",".bitcoin"}, {"BTCD",".BitcoinDark"}, {"LTC",".litecoin"}, {"VRC",".vericoin"}, {"OPAL",".opalcoin"}, {"BITS",".Bitstar"}, {"DOGE",".dogecoin"}, {"DASH",".dash"}, {"BC",".blackcoin"}, {"FIBRE",".Fibre"}, {"VPN",".vpncoin"}, {"SYS",".syscoin"}, {"INFX",".Influx"}, {"SHARK",".SHARK"} };
 #endif
     for (i=0; i<(int32_t)(sizeof(coindirs)/sizeof(*coindirs)); i++)
         if ( strcmp(coindirs[i][0],coinstr) == 0 )
