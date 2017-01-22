@@ -40,7 +40,7 @@ int32_t ramchain_update(struct coin777 *coin,struct ramchain *ramchain)
 {
     uint32_t blocknum; int32_t lag,syncflag,flag = 0; //double startmilli; struct alloc_space MEM; 
     blocknum = ramchain->blocknum;
-printf("ramchain_update.%d\n",blocknum);
+//printf("ramchain_update.%d\n",blocknum);
     if ( (lag= (ramchain->RTblocknum - blocknum)) < 10 )
         ramchain->RTmode = 1;
     if ( ramchain->RTmode != 0 || (blocknum % 100) == 0 )
