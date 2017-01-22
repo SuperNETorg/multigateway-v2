@@ -2360,7 +2360,7 @@ int32_t PLUGNAME(_process_json)(char *forwarder,char *sender,int32_t valid,struc
             printf("(%s) has not method or not a gateway node %d\n",jsonstr,SUPERNET.gatewayid);
             return(0);
         }
-        printf("MGW.(%s) for (%s)\n",methodstr,coinstr!=0?coinstr:"");
+        printf("call MGW.(%s) for (%s)\n",methodstr,coinstr!=0?coinstr:"");
         if ( resultstr != 0 && strcmp(resultstr,"registered") == 0 )
         {
             plugin->registered = 1;

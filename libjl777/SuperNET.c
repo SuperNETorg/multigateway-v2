@@ -963,7 +963,9 @@ int main(int argc,const char *argv[])
             if ( is_bundled_plugin((char *)argv[i]) != 0 )
                 language_func((char *)argv[i],"",0,0,1,(char *)argv[i],jsonstr,call_system);
     }
-    sleep(60);
+printf("process_userinput loop\n");
+    sleep(6);
+//process_nn_message(-1,"{\"plugin\":\"ramchain\",\"method\":\"create\",\"coin\":\"SHARK\"}");
 
     while ( 1 )
     {

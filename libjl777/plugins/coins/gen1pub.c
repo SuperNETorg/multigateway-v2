@@ -46,6 +46,7 @@ uint32_t _get_RTheight(double *lastmillip,char *coinstr,char *serverport,char *u
         retstr = bitcoind_passthru(coinstr,serverport,userpass,"getinfo","");
         if ( retstr != 0 )
         {
+//printf("getinfo.(%s)\n",retstr);
             if ( (json= cJSON_Parse(retstr)) != 0 )
             {
                 height = (uint32_t)get_API_int(cJSON_GetObjectItem(json,"blocks"),0);
@@ -99,6 +100,9 @@ char *_get_blockhashstr(char *coinstr,char *serverport,char *userpass,uint32_t b
             free(blockhashstr);
         return(0);
     }
+if ( blockhashstr[strlen(blockhashstr)-1] == '\n' )
+blockhashstr[strlen(blockhashstr)-1] = 0;
+//printf("%s blocknum.%d -> (%s)\n",coinstr,blocknum,blockhashstr);
     return(blockhashstr);
 }
 
@@ -112,8 +116,8 @@ cJSON *_get_blockjson(uint32_t *heightp,char *coinstr,char *serverport,char *use
     if ( blockhashstr != 0 )
     {
         sprintf(buf,"\"%s\"",blockhashstr);
-        //printf("get_blockjson.(%d %s)\n",blocknum,blockhashstr);
         blocktxt = bitcoind_passthru(coinstr,serverport,userpass,"getblock",buf);
+        //printf("get_blockjson.(%d %s) (%s)\n",blocknum,blockhashstr,blocktxt);
         if ( blocktxt != 0 && blocktxt[0] != 0 && (json= cJSON_Parse(blocktxt)) != 0 && heightp != 0 )
             *heightp = (uint32_t)get_API_int(cJSON_GetObjectItem(json,"height"),0xffffffff);
         if ( flag != 0 && blockhashstr != 0 )
@@ -294,7 +298,7 @@ int32_t rawblock_load(struct rawblock *raw,char *coinstr,char *serverport,char *
     uint64_t total = 0;
     ram_clear_rawblock(raw,0);
     //raw->blocknum = blocknum;
-    //printf("_get_blockinfo.%d\n",blocknum);
+    printf("rawblock_load.%d\n",blocknum);
     raw->minted = raw->numtx = raw->numrawvins = raw->numrawvouts = 0;
     if ( (json= _get_blockjson(0,coinstr,serverport,userpass,0,blocknum)) != 0 )
     {
@@ -322,7 +326,7 @@ int32_t rawblock_load(struct rawblock *raw,char *coinstr,char *serverport,char *
             raw->minted = total;
         free_json(json);
     } else printf("get_blockjson error parsing.(%s)\n",txidstr);
-//printf("BLOCK.%d: block.%d numtx.%d minted %.8f rawnumvins.%d rawnumvouts.%d\n",blocknum,raw->blocknum,raw->numtx,dstr(raw->minted),raw->numrawvins,raw->numrawvouts);
+printf("BLOCK.%d: block.%d numtx.%d minted %.8f rawnumvins.%d rawnumvouts.%d\n",blocknum,raw->blocknum,raw->numtx,dstr(raw->minted),raw->numrawvins,raw->numrawvouts);
     rawblock_patch(raw);
     return(raw->numtx);
 }

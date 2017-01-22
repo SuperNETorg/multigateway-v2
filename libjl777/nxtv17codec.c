@@ -154,7 +154,7 @@ int base64decode (char *in, size_t inLen, unsigned char *out, size_t *outLen) {
     V17DO printf("\n");
 
     while (in < end) {
-        unsigned char c = d[*in++];
+        unsigned char c = d[(int)*in++];
         
         switch (c) {
             case WHITESPACE: continue;   /* skip whitespace */

@@ -40,7 +40,8 @@ int32_t ramchain_update(struct coin777 *coin,struct ramchain *ramchain)
 {
     uint32_t blocknum; int32_t lag,syncflag,flag = 0; //double startmilli; struct alloc_space MEM; 
     blocknum = ramchain->blocknum;
-    if ( (lag= (ramchain->RTblocknum - blocknum)) < 1000 )
+printf("ramchain_update.%d\n",blocknum);
+    if ( (lag= (ramchain->RTblocknum - blocknum)) < 10 )
         ramchain->RTmode = 1;
     if ( ramchain->RTmode != 0 || (blocknum % 100) == 0 )
         ramchain->RTblocknum = _get_RTheight(&ramchain->lastgetinfo,coin->name,coin->serverport,coin->userpass,ramchain->RTblocknum);
@@ -126,10 +127,11 @@ int32_t ramchain_stop(char *retbuf,int32_t maxlen,struct coin777 *coin,struct ra
 int32_t ramchain_init(char *retbuf,int32_t maxlen,struct coin777 *coin,struct ramchain *ramchain,cJSON *argjson,char *coinstr,char *serverport,char *userpass,uint32_t startblocknum,uint32_t endblocknum,uint32_t minconfirms)
 {
     coin->minconfirms = minconfirms;
-    printf("(%s %s %s) vs (%s %s %s)\n",coinstr,serverport,userpass,coin->name,coin->serverport,coin->userpass);
+    printf("ramchain_init: (%s %s %s) vs (%s %s %s)\n",coinstr,serverport,userpass,coin->name,coin->serverport,coin->userpass);
     ramchain->syncfreq = 10000;
     ramchain->startblocknum = startblocknum, ramchain->endblocknum = endblocknum;
     ramchain->RTblocknum = _get_RTheight(&ramchain->lastgetinfo,coin->name,coin->serverport,coin->userpass,ramchain->RTblocknum);
+printf("ramchain RTblocknum.%s %d\n",coin->name,ramchain->RTblocknum);
     if ( endblocknum == 0 )
         ramchain->endblocknum = endblocknum = 1000000000;
     return(ramchain_resume(retbuf,maxlen,coin,ramchain,argjson,startblocknum,endblocknum));
