@@ -422,7 +422,7 @@ void serverloop(void *_args)
                 mgw_processbus(retbuf,jsonstr,json);
                 free_json(json);
             }
-            //printf("MGW bus recv.%d json.%p\n",len,json);
+            printf("MGW bus recv.%d jsonstr.(%s)\n",len,jsonstr);
             nn_freemsg(jsonstr);
         }
         n += busdata_poll();

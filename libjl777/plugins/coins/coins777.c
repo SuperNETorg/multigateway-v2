@@ -483,7 +483,7 @@ int32_t coin777_RWmmap(int32_t writeflag,void *value,struct coin777 *coin,struct
                     }
                     if ( memcmp(value,ptr,itemsize) != 0 && sp->itemsize <= sizeof(zeroes) )
                     {
-                        if ( memcmp(ptr,zeroes,sp->itemsize) != 0 )
+                        if ( 0 && memcmp(ptr,zeroes,sp->itemsize) != 0 )
                         {
                             printf("\n");
                             for (i=0; i<sp->itemsize; i++)
