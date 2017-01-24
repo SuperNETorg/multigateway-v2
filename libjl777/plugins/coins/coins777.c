@@ -995,6 +995,7 @@ uint64_t coin777_unspents(uint64_t (*unspentsfuncp)(struct coin777 *coin,void *a
     uint32_t addrind,firstblocknum; struct coin777_Lentry L; struct addrtx_info *unspents; uint64_t balance,sum = 0; int32_t n;
     if ( (addrind= coin777_addrind(&firstblocknum,coin,coinaddr)) != 0 )
     {
+//printf("(%s) -> addrind.%d\n",coinaddr,addrind);
         if ( coin777_RWmmap(0,&L,coin,&coin->ramchain.ledger,addrind) == 0 && (unspents= coin777_compact(1,&balance,&n,coin,addrind,&L)) != 0 )
         {
             if ( unspentsfuncp != 0 )

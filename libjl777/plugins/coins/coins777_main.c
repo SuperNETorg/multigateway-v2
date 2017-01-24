@@ -42,6 +42,7 @@ int32_t coins_idle(struct plugin_info *plugin)
                         update_NXT_assettransfers(&coin->mgw);
                         if ( coin->ramchain.readyflag != 0 )
                             mgw_calc_unspent(smallestaddr,smallestaddrB,coin);
+			else printf("%s not ready\n",coin->name);
                         coin->mgw.lastupdate = milliseconds();
                     }
                     /*if ( coin->mgw.marker[0] != 0 && coin->ramchain.startmilli == 0 && coin->ramchain.readyflag == 0 )

@@ -513,7 +513,7 @@ coin = coin777_find(coinstr,0);
         if ( (msig= find_msigaddr((void *)databuf,&len,coinstr,multisigaddr)) != 0 )
         {
             printf("found msig for NXT.%llu -> (%s)\n",(long long)nxt64bits,msig->multisigaddr);
-	if ( strlen(msig->multisigaddr) < 64 && (str= dex_importaddress(coinstr,coin->serverport,coin->userpass,msig->multisigaddr)) != 0 )
+	if ( 0 &&strlen(msig->multisigaddr) < 64 && (str= dex_importaddress(coinstr,coin->serverport,coin->userpass,msig->multisigaddr)) != 0 )
 	{
 		printf("dex_importaddress.(%s) returns.(%s)\n",msig->multisigaddr,str);
 		free(str);
@@ -538,7 +538,7 @@ coin = coin777_find(coinstr,0);
         flag = issue_createmultisig(msig->multisigaddr,msig->redeemScript,coinstr,coin->serverport,coin->userpass,coin->mgw.use_addmultisig,msig);
         if ( flag == 0 )
             return(0);
-	if ( strlen(msig->multisigaddr) < 64 && (str= dex_importaddress(coinstr,coin->serverport,coin->userpass,msig->multisigaddr)) != 0 )
+	if ( 0 && strlen(msig->multisigaddr) < 64 && (str= dex_importaddress(coinstr,coin->serverport,coin->userpass,msig->multisigaddr)) != 0 )
 	{
 		printf("dex_importaddress.(%s) returns.(%s)\n",msig->multisigaddr,str);
 		free(str);
@@ -2437,6 +2437,8 @@ int32_t PLUGNAME(_process_json)(char *forwarder,char *sender,int32_t valid,struc
                 if ( (retstr= devMGW_command(jsonstr,json)) != 0 )
                     printf("msigaddr.(%s)\n",retstr);
                 else sprintf(retbuf,"{\"result\":\"start msigaddr\"}");
+char smallestaddr[64],smallestaddrB[64];
+mgw_calc_unspent(smallestaddr,smallestaddrB,coin777_find(coinstr,0));
             }
         }
         else if ( coinstr != 0 && strcmp(methodstr,"status") == 0 )
