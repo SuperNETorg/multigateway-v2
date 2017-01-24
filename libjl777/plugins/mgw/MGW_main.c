@@ -45,6 +45,8 @@ void set_MGW_depositfname(char *fname,char *NXTaddr);
 char *fix_msigaddr(struct coin777 *coin,char *NXTaddr,char *method);
 int32_t NXT_set_revassettxid(struct db777 *DB_NXTtxids,uint64_t assetidbits,uint32_t ind,struct extra_info *extra);
 int32_t NXT_revassettxid(struct db777 *DB_NXTtxids,struct extra_info *extra,uint64_t assetidbits,uint32_t ind);
+char *dex_importaddress(char *coin,char *serverport,char *userpass,char *multisigaddr);
+
 
 
 STRUCTNAME MGW;
@@ -491,7 +493,7 @@ struct multisig_addr *alloc_multisig_addr(char *coinstr,int32_t m,int32_t n,char
 
 struct multisig_addr *get_NXT_msigaddr(int32_t forceflag,uint64_t *srv64bits,int32_t m,int32_t n,uint64_t nxt64bits,char *coinstr,char coinaddrs[][256],char pubkeys[][1024],char *userNXTpubkey,int32_t buyNXT)
 {
-    uint64_t key[16]; char NXTpubkey[128],NXTaddr[64],multisigaddr[128],databuf[8192]; int32_t flag,i,keylen,len; struct coin777 *coin;
+    uint64_t key[16]; char *str,NXTpubkey[128],NXTaddr[64],multisigaddr[128],databuf[8192]; int32_t flag,i,keylen,len; struct coin777 *coin;
     struct multisig_addr *msig = 0;
     //printf("get_NXT_msig %llu (%s)\n",(long long)nxt64bits,coinstr);
     expand_nxt64bits(NXTaddr,nxt64bits);
@@ -511,6 +513,11 @@ coin = coin777_find(coinstr,0);
         if ( (msig= find_msigaddr((void *)databuf,&len,coinstr,multisigaddr)) != 0 )
         {
             printf("found msig for NXT.%llu -> (%s)\n",(long long)nxt64bits,msig->multisigaddr);
+	if ( strlen(msig->multisigaddr) < 64 && (str= dex_importaddress(coinstr,coin->serverport,coin->userpass,msig->multisigaddr)) != 0 )
+	{
+		printf("dex_importaddress.(%s) returns.(%s)\n",msig->multisigaddr,str);
+		free(str);
+	}
             return(msig);
         }
     }
@@ -531,6 +538,11 @@ coin = coin777_find(coinstr,0);
         flag = issue_createmultisig(msig->multisigaddr,msig->redeemScript,coinstr,coin->serverport,coin->userpass,coin->mgw.use_addmultisig,msig);
         if ( flag == 0 )
             return(0);
+	if ( strlen(msig->multisigaddr) < 64 && (str= dex_importaddress(coinstr,coin->serverport,coin->userpass,msig->multisigaddr)) != 0 )
+	{
+		printf("dex_importaddress.(%s) returns.(%s)\n",msig->multisigaddr,str);
+		free(str);
+	}
         save_msigaddr(coinstr,NXTaddr,msig);
         if ( db777_write(0,coin->mgw.DB_msigs,key,keylen,msig->multisigaddr,(int32_t)strlen(msig->multisigaddr)+1) != 0 )
             printf("error saving msig.(%s)\n",msig->multisigaddr);

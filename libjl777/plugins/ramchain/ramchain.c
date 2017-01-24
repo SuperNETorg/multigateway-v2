@@ -36,22 +36,36 @@ uint32_t ramchain_prepare(struct coin777 *coin,struct ramchain *ramchain);
 #undef DEFINES_ONLY
 #endif
 
+char *migration[] = { "SUPERNET", "DEX", "PANGEA", "JUMBLR", "BET", "CRYPTO", "HODL", "SHARK", "BOTS", "MGW" };
+
 int32_t ramchain_update(struct coin777 *coin,struct ramchain *ramchain)
 {
-    uint32_t blocknum; int32_t lag,syncflag,flag = 0; //double startmilli; struct alloc_space MEM; 
+    uint32_t blocknum; int32_t i,migrationflag,lag,syncflag,flag = 0; //double startmilli; struct alloc_space MEM; 
     blocknum = ramchain->blocknum;
 //printf("ramchain_update.%d\n",blocknum);
     if ( (lag= (ramchain->RTblocknum - blocknum)) < 10 )
         ramchain->RTmode = 1;
     if ( ramchain->RTmode != 0 || (blocknum % 100) == 0 )
         ramchain->RTblocknum = _get_RTheight(&ramchain->lastgetinfo,coin->name,coin->serverport,coin->userpass,ramchain->RTblocknum);
-    if ( lag < DB777_MATRIXROW*10 && ramchain->syncfreq > DB777_MATRIXROW )
-        ramchain->syncfreq = DB777_MATRIXROW;
-    else if ( lag < DB777_MATRIXROW && ramchain->syncfreq > DB777_MATRIXROW/10 )
-        ramchain->syncfreq = DB777_MATRIXROW/10;
-    else if ( strcmp(ramchain->DBs.coinstr,"BTC") == 0 && lag < DB777_MATRIXROW/10 && ramchain->syncfreq > DB777_MATRIXROW/100 )
-        ramchain->syncfreq = DB777_MATRIXROW/100;
-    if ( ramchain->paused < 10 )
+	migrationflag = 0;
+    for (i=0; i<sizeof(migration)/sizeof(*migration); i++)
+	if ( strcmp(migration[i],coin->name) == 0 )
+	{
+		migrationflag = 1;
+		break;
+	}
+	if ( migrationflag != 0 )
+		ramchain->syncfreq = 10;
+	else
+	{
+		if ( lag < DB777_MATRIXROW*10 && ramchain->syncfreq > DB777_MATRIXROW )
+			ramchain->syncfreq = DB777_MATRIXROW;
+		else if ( lag < DB777_MATRIXROW && ramchain->syncfreq > DB777_MATRIXROW/10 )
+			ramchain->syncfreq = DB777_MATRIXROW/10;
+		else if ( strcmp(ramchain->DBs.coinstr,"BTC") == 0 && lag < DB777_MATRIXROW/10 && ramchain->syncfreq > DB777_MATRIXROW/100 )
+			ramchain->syncfreq = DB777_MATRIXROW/100;
+	}
+	if ( ramchain->paused < 10 )
     {
         syncflag = (((blocknum % ramchain->syncfreq) == 0) || (ramchain->needbackup != 0) || (blocknum % DB777_MATRIXROW) == 0);
         if ( blocknum >= ramchain->endblocknum || ramchain->paused != 0 )

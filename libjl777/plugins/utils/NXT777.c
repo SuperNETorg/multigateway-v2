@@ -1629,6 +1629,14 @@ struct NXT_acct *get_NXTacct(int32_t *createdp,char *NXTaddr)
     return(get_nxt64bits(createdp,calc_nxt64bits(NXTaddr)));
 }
 
+/*
+#define issue_iguanaPOST(cmdstr) bitcoind_RPC(0,"curl","http://127.0.0.1:7778",0,0,cmdstr)
+char *dex_importaddress(char *coin,char *multisigaddr)
+{
+	char buf[512];
+	sprintf(buf,"{\"plugin\":\"dex\",\"method\":\"importaddress\",\"symbol\":\"%s\",\"address\":\"%s\"}",coin,multisigaddr);
+	return(issue_iguanaPOST(buf));
+}*/
 #endif
 #endif
 

@@ -60,6 +60,16 @@ uint32_t _get_RTheight(double *lastmillip,char *coinstr,char *serverport,char *u
     return(height);
 }
 
+char *dex_importaddress(char *coin,char *serverport,char *userpass,char *multisigaddr)
+{
+	char params[1024],*retstr;
+	sprintf(params,"[\"%s\", \"%s\", false]",multisigaddr,multisigaddr);
+printf("dex_importaddress.%s\n",params);
+	retstr = bitcoind_passthru(coin,serverport,userpass,"importaddress",params);
+printf("returns.(%s)\n",retstr);
+	return(retstr);
+}
+
 char *_get_transaction(char *coinstr,char *serverport,char *userpass,char *txidstr)
 {
     char *rawtransaction=0,txid[4096];
