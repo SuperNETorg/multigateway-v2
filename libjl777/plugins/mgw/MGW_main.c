@@ -1610,6 +1610,7 @@ int32_t validate_coinaddr(char *coinstr,char *serverport,char *userpass,char *co
     else safecopy(quotes,coinaddr,sizeof(quotes));
     if ( (retstr= bitcoind_RPC(0,coinstr,serverport,userpass,"validateaddress",quotes)) != 0 )
     {
+printf("(%s) -> validate.(%s)\n",coinaddr,retstr);
         if ( (json= cJSON_Parse(retstr)) != 0 )
         {
             validobj = cJSON_GetObjectItem(json,"isvalid");
