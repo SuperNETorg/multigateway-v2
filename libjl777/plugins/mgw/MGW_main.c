@@ -1867,7 +1867,7 @@ char *mgw_OP_RETURN(int32_t opreturn,char *rawtx,int32_t do_opreturn,uint64_t re
         if ( _emit_cointx(retstr,len,cointx,oldtx_format) < 0 )
             free(retstr), retstr = 0;
         free(cointx);
-    } else printf("error mgw_encode_OP_RETURN\n");
+    } else printf("error mgw_encode_OP_RETURN, txformat.%d\n",oldtx_format);
     return(retstr);
 }
 
@@ -1909,7 +1909,7 @@ cJSON *mgw_create_vouts(struct cointx_info *cointx)
     cJSON *json;
     json = cJSON_CreateObject();
     for (i=0; i<cointx->numoutputs; i++)
-        cJSON_AddItemToObject(json,cointx->outputs[i].coinaddr, cJSON_CreateNumber(dstr(cointx->outputs[i].value)));
+        cJSON_AddItemToObject(json,cointx->outputs[i].coinaddr, cJSON_CreateNumber(dstr(cointx->outputs[i].value!=0?cointx->outputs[i].value:6000)));
     return(json);
 }
 
