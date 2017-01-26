@@ -1610,12 +1610,14 @@ int32_t validate_coinaddr(char *coinstr,char *serverport,char *userpass,char *co
     else safecopy(quotes,coinaddr,sizeof(quotes));
     if ( (retstr= bitcoind_RPC(0,coinstr,serverport,userpass,"validateaddress",quotes)) != 0 )
     {
-printf("(%s) -> validate.(%s)\n",coinaddr,retstr);
+//printf("(%s) -> validate.(%s)\n",coinaddr,retstr);
         if ( (json= cJSON_Parse(retstr)) != 0 )
         {
             validobj = cJSON_GetObjectItem(json,"isvalid");
             if ( is_cJSON_True(validobj) != 0 )
                 retval = 1;
+	    else if ( cJSON_GetObjectItem(json,"ismine") != 0 && cJSON_GetObjectItem(json,"isscript") != 0 )
+		retval = 1;
             free_json(json);
         }
         free(retstr);
