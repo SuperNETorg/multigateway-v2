@@ -43,12 +43,12 @@ char *dumpprivkey(char *coinstr,char *serverport,char *userpass,char *coinaddr)
 {
     char args[1024],*retstr;
     sprintf(args,"[\"%s\"]",coinaddr);
-    retstr = bitcoind_passthru(coinstr,serverport,userpass,"dumpprivkey",args);
-if ( retstr[strlen(retstr)-1] == '\n' )
-retstr[strlen(retstr)-1] = 0;
-if ( retstr[strlen(retstr)-1] == '\n' )
-retstr[strlen(retstr)-1] = 0;
-return(retstr);
+    if ( (retstr= bitcoind_passthru(coinstr,serverport,userpass,"dumpprivkey",args)) != 0 )
+	{
+	if ( retstr[strlen(retstr)-1] == '\n' )
+	retstr[strlen(retstr)-1] = 0;
+	}
+	return(retstr);
 }
 
 char *get_acct_coinaddr(char *coinaddr,char *coinstr,char *serverport,char *userpass,char *NXTaddr)
@@ -56,9 +56,11 @@ char *get_acct_coinaddr(char *coinaddr,char *coinstr,char *serverport,char *user
     char addr[128],*retstr;
     coinaddr[0] = 0;
     sprintf(addr,"\"%s\"",NXTaddr);
-    retstr = bitcoind_passthru(coinstr,serverport,userpass,"getaccountaddress",addr);
+    if ( (retstr= bitcoind_passthru(coinstr,serverport,userpass,"getaccountaddress",addr)) != 0 )
+	{
 if ( retstr[strlen(retstr)-1] == '\n' )
 retstr[strlen(retstr)-1] = 0;
+	}
     printf("get_acct_coinaddr.(%s) -> (%s)\n",NXTaddr,retstr);
     if ( retstr != 0 )
     {

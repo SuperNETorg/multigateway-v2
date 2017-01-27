@@ -55,9 +55,11 @@ char *post_process_bitcoind_RPC(char *debugstr,char *command,char *rpcstr,char *
     json = cJSON_Parse(rpcstr);
     if ( json == 0 )
     {
-        fprintf(stderr,"<<<<<<<<<<< bitcoind_RPC: %s post_process_bitcoind_RPC.%s can't parse.(%s) params.(%s)\n",debugstr,command,rpcstr,params);
-        free(rpcstr);
-        return(0);
+        //fprintf(stderr,"<<<<<<<<<<< bitcoind_RPC: %s post_process_bitcoind_RPC.%s can't parse.(%s) params.(%s)\n",debugstr,command,rpcstr,params);
+        //free(rpcstr);
+	if ( rpcstr[strlen(rpcstr)-1] == '\n' )
+		rpcstr[strlen(rpcstr)-1] = 0;
+        return(rpcstr);
     }
     result = cJSON_GetObjectItem(json,"result");
     error = cJSON_GetObjectItem(json,"error");
