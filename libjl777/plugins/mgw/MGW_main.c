@@ -1952,9 +1952,9 @@ struct cointx_info *mgw_createrawtransaction(struct mgw777 *mgw,char *coinstr,ch
         array = cJSON_CreateArray();
         if ( (flags= mgw_other_redeems(mgw,signedtxs,redeemtxid)) != 0 )
         {
-            if ( (txbytes2= signedtxs[(SUPERNET.gatewayid + 1) % NUM_GATEWAYS]) != 0 )
+            if ( (txbytes2= signedtxs[(SUPERNET.gatewayid + 1) % NUM_GATEWAYS]) != 0 && txbytes2[0] != 0 )
                 free(txbytes), txbytes = txbytes2, signedtxs[(SUPERNET.gatewayid + 1) % NUM_GATEWAYS] = 0;
-            if ( (txbytes2= signedtxs[(SUPERNET.gatewayid - 1 + NUM_GATEWAYS) % NUM_GATEWAYS]) != 0 )
+            if ( (txbytes2= signedtxs[(SUPERNET.gatewayid - 1 + NUM_GATEWAYS) % NUM_GATEWAYS]) != 0 && txbytes2[0] != 0 )
                 free(txbytes), txbytes = txbytes2, signedtxs[(SUPERNET.gatewayid - 1 + NUM_GATEWAYS) % NUM_GATEWAYS] = 0;
             for (i=0; i<NUM_GATEWAYS; i++)
                 if ( signedtxs[i] != 0 )
