@@ -41,9 +41,14 @@ char *get_msig_pubkeys(char *coinstr,char *serverport,char *userpass);
 
 char *dumpprivkey(char *coinstr,char *serverport,char *userpass,char *coinaddr)
 {
-    char args[1024];
+    char args[1024],*retstr;
     sprintf(args,"[\"%s\"]",coinaddr);
-    return(bitcoind_passthru(coinstr,serverport,userpass,"dumpprivkey",args));
+    retstr = bitcoind_passthru(coinstr,serverport,userpass,"dumpprivkey",args);
+if ( retstr[strlen(retstr)-1] == '\n' )
+retstr[strlen(retstr)-1] = 0;
+if ( retstr[strlen(retstr)-1] == '\n' )
+retstr[strlen(retstr)-1] = 0;
+return(retstr);
 }
 
 char *get_acct_coinaddr(char *coinaddr,char *coinstr,char *serverport,char *userpass,char *NXTaddr)
@@ -52,6 +57,8 @@ char *get_acct_coinaddr(char *coinaddr,char *coinstr,char *serverport,char *user
     coinaddr[0] = 0;
     sprintf(addr,"\"%s\"",NXTaddr);
     retstr = bitcoind_passthru(coinstr,serverport,userpass,"getaccountaddress",addr);
+if ( retstr[strlen(retstr)-1] == '\n' )
+retstr[strlen(retstr)-1] = 0;
     printf("get_acct_coinaddr.(%s) -> (%s)\n",NXTaddr,retstr);
     if ( retstr != 0 )
     {
