@@ -1810,7 +1810,7 @@ char *mgw_sign_rawbytes(uint32_t *completedp,char *signedbytes,int32_t max,char 
         {
             if ( (compobj= cJSON_GetObjectItem(json,"complete")) != 0 )
                 *completedp = ((compobj->type&0xff) == cJSON_True);
-            if ( (hexstr= cJSON_str(cJSON_GetObjectItem(json,"hex"))) != 0 )
+            if ( (hexstr= cJSON_str(cJSON_GetObjectItem(json,"hex"))) != 0 || (hexstr= cJSON_str(cJSON_GetObjectItem(json,"result"))) != 0 )
             {
                 if ( strlen(hexstr) > max )
                     printf("sign_rawbytes: strlen(hexstr) %ld > %d destize (%s)\n",strlen(hexstr),max,retstr), free(retstr), retstr = 0;
