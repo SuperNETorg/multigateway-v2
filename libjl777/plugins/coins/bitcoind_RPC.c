@@ -67,6 +67,8 @@ char *post_process_bitcoind_RPC(char *debugstr,char *command,char *rpcstr,char *
         {
             retstr = cJSON_Print(result);
             len = strlen(retstr);
+	    if ( retstr[len-1] == '\n' )
+		retstr[len-- - 1] = 0;
             if ( retstr[0] == '"' && retstr[len-1] == '"' )
             {
                 for (i=1,j=0; i<len-1; i++,j++)
@@ -80,6 +82,8 @@ char *post_process_bitcoind_RPC(char *debugstr,char *command,char *rpcstr,char *
     } else retstr = rpcstr;
     free_json(json);
     //fprintf(stderr,"<<<<<<<<<<< bitcoind_RPC: postprocess returns.(%s)\n",retstr);
+if ( retstr[strlen(retstr)-1] == '\n' )
+retstr[strlen(retstr)-1] = 0;
     return(retstr);
 }
 #endif
