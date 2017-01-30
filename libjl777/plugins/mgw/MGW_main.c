@@ -1950,16 +1950,6 @@ struct cointx_info *mgw_createrawtransaction(struct mgw777 *mgw,char *coinstr,ch
             printf("opreturn txbytes.(%s)\n",txbytes);
         }
         array = cJSON_CreateArray();
-        if ( (flags= mgw_other_redeems(mgw,signedtxs,redeemtxid)) != 0 )
-        {
-            if ( (txbytes2= signedtxs[(SUPERNET.gatewayid + 1) % NUM_GATEWAYS]) != 0 && txbytes2[0] != 0 )
-                free(txbytes), txbytes = txbytes2, signedtxs[(SUPERNET.gatewayid + 1) % NUM_GATEWAYS] = 0;
-            if ( (txbytes2= signedtxs[(SUPERNET.gatewayid - 1 + NUM_GATEWAYS) % NUM_GATEWAYS]) != 0 && txbytes2[0] != 0 )
-                free(txbytes), txbytes = txbytes2, signedtxs[(SUPERNET.gatewayid - 1 + NUM_GATEWAYS) % NUM_GATEWAYS] = 0;
-            for (i=0; i<NUM_GATEWAYS; i++)
-                if ( signedtxs[i] != 0 )
-                    free(signedtxs[i]);
-        }
         cJSON_AddItemToArray(array,cJSON_CreateString(txbytes));
         cJSON_AddItemToArray(array,vinsobj);
         cJSON_AddItemToArray(array,keysobj);
@@ -1968,6 +1958,19 @@ struct cointx_info *mgw_createrawtransaction(struct mgw777 *mgw,char *coinstr,ch
         {
             allocsize = (int32_t)(sizeof(*rettx) + strlen(signedtx) + 1);
             printf("signedtx returns.(%s) allocsize.%d\n",signedtx,allocsize);
+        if ( (flags= mgw_other_redeems(mgw,signedtxs,redeemtxid)) != 0 )
+        {
+            /*if ( (txbytes2= signedtxs[(SUPERNET.gatewayid + 1) % NUM_GATEWAYS]) != 0 && txbytes2[0] != 0 )
+                free(txbytes), txbytes = txbytes2, signedtxs[(SUPERNET.gatewayid + 1) % NUM_GATEWAYS] = 0;
+            if ( (txbytes2= signedtxs[(SUPERNET.gatewayid - 1 + NUM_GATEWAYS) % NUM_GATEWAYS]) != 0 && txbytes2[0] != 0 )
+                free(txbytes), txbytes = txbytes2, signedtxs[(SUPERNET.gatewayid - 1 + NUM_GATEWAYS) % NUM_GATEWAYS] = 0;*/
+            for (i=0; i<NUM_GATEWAYS; i++)
+                if ( signedtxs[i] != 0 )
+		{
+			printf("G%d: extract sig from.(%s)\n",i,signedtxs[i]);
+                    free(signedtxs[i]);
+		}
+        }
             rettx = calloc(1,allocsize);
             *rettx = *cointx;
             rettx->allocsize = allocsize;
